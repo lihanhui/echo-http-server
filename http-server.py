@@ -33,6 +33,7 @@ class MainHandler(tornado.web.RequestHandler):
     	if self.request.path == '/config/submit':
             self.write("not supported, please call POST method!")
         else:
+            self.set_header("Content-Type", "application/json")
             self.write(self._response())
         self.finish()    
         
@@ -41,6 +42,7 @@ class MainHandler(tornado.web.RequestHandler):
             self._add_data()
             self.write("submitted!")
         else:
+            self.set_header("Content-Type", "application/json")
             self.write(self._response())
         self.finish()
         
