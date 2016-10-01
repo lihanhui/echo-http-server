@@ -1,6 +1,8 @@
 # echo-http-server
 One simple echo http server which replies any json content as defined.
+
 Example:
+
 Step 1: define request path and its response
 
 POST following content to http://your-server-host:8888/config/submit,
