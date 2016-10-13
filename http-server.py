@@ -5,15 +5,18 @@ import tornado.ioloop
 import tornado.web
 
 class APIData():
-    json_data = {}
+    def __init__(self, datafile):
+        self.datafile = datafile    
+        self.json_data = {}
+
     def _read_data(self): 
-        with open("data.json") as json_file:
-            json_data = json.load(json_file)
-            print(json.dumps(json_data))
-        return json_data
+        with open(self.datafile) as json_file:
+            self.json_data = json.load(json_file)
+            print(json.dumps(self.json_data))
+        return self.json_data
         
     def _write_data(self):
-        with open('data.json', 'w') as json_file:
+        with open(self.datafile, 'w') as json_file:
             json.dump(self.json_data, json_file)
     
     def __init__(self):
@@ -67,8 +70,8 @@ class MainHandler(tornado.web.RequestHandler):
             return None;
 
 class Application(tornado.web.Application):
-    def __init__(self):
-        self.apidata = APIData()
+    def __init__(self, datafile):
+        self.apidata = APIData(datafile)
         handlers = [
             #(r"/config/submit", SubmitHandler),
             (r"/.*", MainHandler),
@@ -83,12 +86,16 @@ if __name__ == "__main__":
     usage = "usage: python http-server.py [options]"  
     parser = OptionParser(usage=usage)
     parser.add_option('-p', '--port', help="server port")
+    parser.add_option('-d', '--data', help="data file")
     options, args = parser.parse_args(sys.argv)
     port = 8888
     if options.port is not None:  
-        port = int(options.port)  
+        port = int(options.port)
+    data = 'data.json'
+    if options.port is not None:
+        data = options.data  
     
-    app = Application()
+    app = Application(data)
     app.listen(port)
     tornado.ioloop.IOLoop.current().start()
     
