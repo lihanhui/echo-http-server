@@ -48,7 +48,9 @@ class MainHandler(tornado.web.RequestHandler):
         
     def _add_data(self):
         data = json.loads(self.request.body)
-        self.application.apidata.data()[data['path']] = data['data']
+        path = data['path']
+        path = path.split('?')[0]
+        self.application.apidata.data()[path] = data['data']
         self.application.apidata.dump()
         self.application.apidata.load()
     
