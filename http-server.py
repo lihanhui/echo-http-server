@@ -6,8 +6,8 @@ import tornado.web
 
 class APIData():
     def __init__(self, datafile):
-        self.datafile = datafile    
-        self.json_data = {}
+        self.datafile = datafile
+        self.json_data = self._read_data()
 
     def _read_data(self): 
         with open(self.datafile) as json_file:
@@ -19,9 +19,6 @@ class APIData():
         with open(self.datafile, 'w') as json_file:
             json.dump(self.json_data, json_file)
     
-    def __init__(self):
-        self.json_data = self._read_data()
-        
     def data(self):
         return self.json_data
      
@@ -91,12 +88,12 @@ if __name__ == "__main__":
     port = 8888
     if options.port is not None:  
         port = int(options.port)
+    
     data = 'data.json'
-    if options.port is not None:
+    if options.data is not None:
         data = options.data  
     
     app = Application(data)
     app.listen(port)
     tornado.ioloop.IOLoop.current().start()
     
-
