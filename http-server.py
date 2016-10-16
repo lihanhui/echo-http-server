@@ -56,7 +56,7 @@ class MainHandler(tornado.web.RequestHandler):
     
     def _response(self):
         response = self._get_response()
-        if response:
+        if response is not None:
             return json.dumps(response)
         else:
             self.set_status(404)
