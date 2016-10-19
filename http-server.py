@@ -15,7 +15,7 @@ class APIData():
     def _read_data(self): 
         with open(self.datafile) as json_file:
             self.json_data = json.load(json_file)
-            print(json.dumps(self.json_data, sort_keys=True, indent=4))
+            print(json.dumps(self.json_data, sort_keys=True, indent=4, ensure_ascii=False))
         return self.json_data
         
     def _write_data(self):
@@ -36,7 +36,7 @@ class MainHandler(tornado.web.RequestHandler):
     	if self.request.path == '/config/submit':
             self.write("not supported, please call POST method!")
         else:
-            self.set_header("Content-Type", "application/json")
+            self.set_header("Content-Type", "application/json; charset=utf-8")
             self.write(self._response())
         self.finish()    
         
@@ -45,7 +45,7 @@ class MainHandler(tornado.web.RequestHandler):
             self._add_data()
             self.write("submitted!")
         else:
-            self.set_header("Content-Type", "application/json")
+            self.set_header("Content-Type", "application/json; charset=utf-8")
             self.write(self._response())
         self.finish()
         
